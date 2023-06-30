@@ -4,8 +4,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // include_once __DIR__ . '/vendor/autoload.php';
+include_once('setting/static.php');
 include_once('lib/log.php');
 include_once('lib/request.php');
+
 
 $request = new Request();
 class netopiapayments extends WC_Payment_Gateway {
@@ -21,6 +23,7 @@ class netopiapayments extends WC_Payment_Gateway {
         $this->icon                   = NTP_PLUGIN_DIR . 'img/netopiapayments.gif';
         $this->has_fields             = true;
         $this->notify_url             = WC()->api_request_url( 'netopiapayments' );	// IPN URL - WC REST API
+        $this->envMod                 = MODE_STARTUP;
         
         /**
          * Defination the plugin setting fiels in payment configuration
@@ -64,6 +67,8 @@ class netopiapayments extends WC_Payment_Gateway {
           'title'        => __( 'Enable / Disable', 'netopiapayments' ),
           'label'        => __( 'Enable this payment gateway', 'netopiapayments' ),
           'type'         => 'checkbox',
+          'description' => __( 'Disable / Enable of NETOPIA Payment method.', 'netopiapayments' ),
+          'desc_tip'    => true,
           'default'      => 'no',
          ),
          'environment'  => array(
@@ -71,55 +76,151 @@ class netopiapayments extends WC_Payment_Gateway {
           'label'       => __( 'Enable Test Mode', 'netopiapayments' ),
           'type'        => 'checkbox',
           'description' => __( 'Place the payment gateway in test mode.', 'netopiapayments' ),
+          'desc_tip'    => true,
           'default'     => 'no',
          ),
          'title' => array(
-          'title'      => __( 'Title', 'netopiapayments' ),
-          'type'       => 'text',
-          'desc_tip'   => __( 'Payment title the customer will see during the checkout process.', 'netopiapayments' ),
-          'default'    => __( 'NETOPIA Payments', 'netopiapayments' ),
+          'title'       => __( 'Title', 'netopiapayments' ),
+          'type'        => 'text',
+          'description' => __( 'Payment title the customer will see during the checkout process.', 'netopiapayments' ),
+          'desc_tip'    => true,
+          'default'     => __( 'NETOPIA Payments', 'netopiapayments' ),
          ),
-         'description' => array(
-          'title'      => __( 'Description', 'netopiapayments' ),
-          'type'       => 'textarea',
-          'desc_tip'   => __( 'Payment description the customer will see during the checkout process.', 'netopiapayments' ),
-          'css'        => 'max-width:350px;',
+         'description'  => array(
+          'title'       => __( 'Description', 'netopiapayments' ),
+          'type'        => 'textarea',
+          'description' => __( 'Payment description the customer will see during the checkout process.', 'netopiapayments' ),
+          'desc_tip'    => true,
+          'css'         => 'max-width:350px;',
          ),
          'default_status' => array(
-          'title'      => __( 'Default status', 'netopiapayments' ),
-          'type'       => 'select',
-          'desc_tip'   => __( 'Default status of transaction.', 'netopiapayments' ),
-          'default'    => 'processing',
-          'options'    => array(
+          'title'        => __( 'Default status', 'netopiapayments' ),
+          'type'         => 'select',
+          'description'  => __( 'Default status of transaction.', 'netopiapayments' ),
+          'desc_tip'     => true,
+          'default'      => 'processing',
+          'options'      => array(
           'completed'    => __('Completed'),
           'processing'   => __('Processing'),
            ),
-         'css'       => 'max-width:350px;',
+          'css'       => 'max-width:350px;',
         ),
-         'key_setting' => array(
-                'title'       => __( 'Seller Account', 'netopiapayments' ),
-                'type'        => 'title',
-                'description' => '',
-            ),
-         'account_id' => array(
-          'title'        => __( 'Seller Account ID', 'netopiapayments' ),
-          'type'        => 'text',
-          'desc_tip'    => __( 'Seller Account ID / Merchant POS identifier, is available in your NETOPIA account.', 'netopiapayments' ),
-          'description'	=> __( 'Find it from NETOPIA Payments admin -> Seller Accounts -> Technical settings.', 'netopiapayments' ),
-         ),
-         'live_api_key' => array(
-          'title'        => __( 'Live API Key: ', 'netopiapayments' ),
-          'type'        => 'text',
-          'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
-          'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
-         ),
-         'sandbox_api_key' => array(
-          'title'        => __( 'Sandbox API Key: ', 'netopiapayments' ),
-          'type'        => 'text',
-          'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
-          'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
-         ),
-        );        
+        //  'wizard_setting' => array(
+        //         'title'       => __( 'Config Wizard', 'netopiapayments' ),
+        //         'type'        => 'title',
+        //         'description' => __('Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>
+        //          Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type<br>
+        //           and scrambled it to make a type specimen book. <br>
+        //           <br>
+        //           It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.<br>
+        //            It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
+        //     ),
+        //  'key_setting' => array(
+        //         'title'       => __( 'Seller Account', 'netopiapayments' ),
+        //         'type'        => 'title',
+        //         'description' => '',
+        //     ),
+        //  'account_id' => array(
+        //   'title'        => __( 'Seller Account ID', 'netopiapayments' ),
+        //   'type'        => 'text',
+        //   'desc_tip'    => __( 'Seller Account ID / Merchant POS identifier, is available in your NETOPIA account.', 'netopiapayments' ),
+        //   'description'	=> __( 'Find it from NETOPIA Payments admin -> Seller Accounts -> Technical settings.', 'netopiapayments' ),
+        //  ),
+        //  'live_api_key' => array(
+        //   'title'        => __( 'Live API Key: ', 'netopiapayments' ),
+        //   'type'        => 'text',
+        //   'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
+        //   'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
+        //  ),
+        //  'sandbox_api_key' => array(
+        //   'title'        => __( 'Sandbox API Key: ', 'netopiapayments' ),
+        //   'type'        => 'text',
+        //   'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
+        //   'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
+        //  ),
+        );
+
+        if ($this->envMod == MODE_STARTUP ) {
+            $this->form_fields['wizard_setting'] =  array(
+                                                    'title'       => '',
+                                                    'type'        => 'title',
+                                                    'description' => __('Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>
+                                                    Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type<br>
+                                                    and scrambled it to make a type specimen book. <br>
+                                                    <br>
+                                                    It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.<br>
+                                                    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
+                                                );
+            
+            $this->form_fields['wizard_button'] = array(
+                                                    'title'             => __( 'Start Configuration!', 'netopiapayments' ),
+                                                    'type'              => 'button',
+                                                    'custom_attributes' => array(
+                                                                                'onclick' => "getNetopiaPlatformCredentials();",
+                                                                            ),
+                                                    'description'       => __( 'Configure your plugin for NETOPIA Payments Method automatically!', 'netopiapayments' ),
+                                                    'desc_tip'          => true,
+                                                );
+        } else {
+            $this->form_fields['key_setting'] = array(
+                                                    'title'       => __( 'Seller Account', 'netopiapayments' ),
+                                                    'type'        => 'title',
+                                                    'description' => '',
+                                                );
+            $this->form_fields['account_id'] = array(
+                                                    'title'        => __( 'Seller Account ID', 'netopiapayments' ),
+                                                    'type'        => 'text',
+                                                    'desc_tip'    => __( 'Seller Account ID / Merchant POS identifier, is available in your NETOPIA account.', 'netopiapayments' ),
+                                                    'description'	=> __( 'Find it from NETOPIA Payments admin -> Seller Accounts -> Technical settings.', 'netopiapayments' ),
+                                                );
+            $this->form_fields['live_api_key'] = array(
+                                                    'title'        => __( 'Live API Key: ', 'netopiapayments' ),
+                                                    'type'        => 'text',
+                                                    'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
+                                                    'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
+                                                );
+            $this->form_fields['sandbox_api_key'] = array(
+                                                        'title'        => __( 'Sandbox API Key: ', 'netopiapayments' ),
+                                                        'type'        => 'text',
+                                                        'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
+                                                        'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
+                                                    );
+        }
+    }
+
+    /**
+     * Generate Button HTML.
+     */
+    public function generate_button_html( $key, $data ) {
+        $field    = $this->plugin_id . $this->id . '_' . $key;
+        $defaults = array(
+            'class'             => 'button-secondary',
+            'css'               => '',
+            'custom_attributes' => array(),
+            'desc_tip'          => false,
+            'description'       => '',
+            'title'             => '',
+        );
+
+        $data = wp_parse_args( $data, $defaults );
+
+        ob_start();
+        ?>
+        <tr valign="top">
+            <th scope="row" class="titledesc">
+                <label for="<?php echo esc_attr( $field ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></label>
+                <?php echo $this->get_tooltip_html( $data ); ?>
+            </th>
+            <td class="forminp">
+                <fieldset>
+                    <legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span></legend>
+                    <button class="<?php echo esc_attr( $data['class'] ); ?>" type="button" name="<?php echo esc_attr( $field ); ?>" id="<?php echo esc_attr( $field ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" <?php echo $this->get_custom_attribute_html( $data ); ?>><?php echo wp_kses_post( $data['title'] ); ?></button>
+                    <?php echo $this->get_description_html( $data ); ?>
+                </fieldset>
+            </td>
+        </tr>
+        <?php
+        return ob_get_clean();
     }
 
     /**

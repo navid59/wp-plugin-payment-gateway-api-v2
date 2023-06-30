@@ -30,4 +30,9 @@ $('#woocommerce_netopiapayments_sandbox_cer').on('change', function () {
 
 $('#woocommerce_netopiapayments_sandbox_key').on('change', function(){
     notifyHandle($(this)[0].files[0],'key',this);
-})
+});
+
+function getNetopiaPlatformCredentials(){
+    alert("The Credential JS called");
+    console.log("Just a test for Credential test");
+}
