@@ -43,7 +43,31 @@ function netopiapayments_init() {
             return;
         }
         wp_enqueue_script( 'netopiapaymentsjs', plugin_dir_url( __FILE__ ) . 'js/netopiapayments.js',array('jquery'),'2.0' ,true);
+        wp_enqueue_script( 'netopiaUIjs', plugin_dir_url( __FILE__ ) . 'js/netopiaCustom.js',array(),'1.0' ,true);
+		wp_localize_script( 'netopiaUIjs', 'netopiaUIPath_data', array(
+			'plugin_url' => getAbsoulutFilePath(),
+			'site_url' => get_site_url(),
+		) );
         wp_enqueue_script( 'netopiatoastrjs', plugin_dir_url( __FILE__ ) . 'js/toastr.min.js',array(),'2.0' ,true);
         wp_enqueue_style( 'netopiatoastrcss', plugin_dir_url( __FILE__ ) . 'css/toastr.min.css',array(),'2.0' ,false);
     }
+}
+
+function getAbsoulutFilePath() {
+	// Get the absolute path to the plugin directory
+	$plugin_dir_path = plugin_dir_path( __FILE__ );
+
+	// Get the absolute path to the WordPress installation directory
+	$wordpress_dir_path = realpath( ABSPATH . '..' );
+
+	// Remove the WordPress installation directory from the plugin directory path
+	$plugin_dir_path = str_replace( $wordpress_dir_path, '', $plugin_dir_path );
+
+	// Remove the leading directory separator
+	$plugin_dir_path = ltrim( $plugin_dir_path, '/' );
+
+	// Remove the first directory name (which is the site directory name)
+	$plugin_dir_path = preg_replace( '/^[^\/]+\//', '/', $plugin_dir_path );
+
+	return $plugin_dir_path;
 }

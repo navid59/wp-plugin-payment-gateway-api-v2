@@ -20,7 +20,8 @@ class netopiapayments extends WC_Payment_Gateway {
         $this->method_title           = __( "NETOPIA Payments", 'netopiapayments' );
         $this->method_description     = __( "NETOPIA Payments V2 Plugin for WooCommerce", 'netopiapayments' );
         $this->title                  = __( "NETOPIA", 'netopiapayments' );
-        $this->icon                   = NTP_PLUGIN_DIR . 'img/netopiapayments.gif';
+        $this->favicon                = NTP_PLUGIN_DIR . 'img/favicon.png';
+        $this->netopiLogo             = NTP_PLUGIN_DIR . 'img/NETOPIA_Payments.svg';
         $this->has_fields             = true;
         $this->notify_url             = WC()->api_request_url( 'netopiapayments' );	// IPN URL - WC REST API
         $this->envMod                 = MODE_STARTUP;
@@ -156,7 +157,7 @@ class netopiapayments extends WC_Payment_Gateway {
                                                     'title'             => __( 'Start Configuration!', 'netopiapayments' ),
                                                     'type'              => 'button',
                                                     'custom_attributes' => array(
-                                                                                'onclick' => "getNetopiaPlatformCredentials();",
+                                                                                // 'onclick' => "getNetopiaPlatformCredentials();",
                                                                             ),
                                                     'description'       => __( 'Configure your plugin for NETOPIA Payments Method automatically!', 'netopiapayments' ),
                                                     'desc_tip'          => true,
