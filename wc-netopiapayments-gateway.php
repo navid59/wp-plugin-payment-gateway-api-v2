@@ -156,9 +156,7 @@ class netopiapayments extends WC_Payment_Gateway {
             $this->form_fields['wizard_button'] = array(
                                                     'title'             => __( 'Start Configuration!', 'netopiapayments' ),
                                                     'type'              => 'button',
-                                                    'custom_attributes' => array(
-                                                                                // 'onclick' => "getNetopiaPlatformCredentials();",
-                                                                            ),
+                                                    'custom_attributes' => array(),
                                                     'description'       => __( 'Configure your plugin for NETOPIA Payments Method automatically!', 'netopiapayments' ),
                                                     'desc_tip'          => true,
                                                 );
