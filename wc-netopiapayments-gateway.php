@@ -26,6 +26,7 @@ class netopiapayments extends WC_Payment_Gateway {
         $this->notify_url             = WC()->api_request_url( 'netopiapayments' );	// IPN URL - WC REST API
         $this->envMod                 = MODE_STARTUP;
         
+
         /**
          * Defination the plugin setting fiels in payment configuration
          */
@@ -36,7 +37,7 @@ class netopiapayments extends WC_Payment_Gateway {
         foreach ( $this->settings as $setting_key => $value ) {
             $this->$setting_key = $value;
         }
-        
+                  
         /**
          * Define the checkNetopiapaymentsResponse methos as NETOPIA Payments IPN
          */

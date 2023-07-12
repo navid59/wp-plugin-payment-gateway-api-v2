@@ -1,5 +1,19 @@
-<link rel="stylesheet" href="../css/custom.css">
-<script src="../js/netopiaCredentials.js"></script>
+<?php 
+  /**
+   * 
+   * IMPORTANT 
+   * To be aproved by wordpress team must be use "wp_enqueue_script"
+   */
+
+  require_once('../../../../wp-load.php');
+  // echo bloginfo('version')."<br>";
+  // echo plugin_dir_url( __FILE__ )."<br>";;
+  // echo plugin_dir_url( __DIR__ )."<br>";
+  // wp_enqueue_script( 'netopiaCredentials', plugin_dir_url( __DIR__ ) . 'js/netopiaCredentials.js',array(),'1.0' ,true); 
+  ?>
+<link rel="stylesheet" href="<?php echo plugin_dir_url( __DIR__ ).'/css/custom.css';?>">
+<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js';?>"></script>
+
   <form class="modal-content animate" method="post">
     <div class="imgcontainer">
       <span onclick="self.close();" class="close" title="Close Modal">&times;</span>

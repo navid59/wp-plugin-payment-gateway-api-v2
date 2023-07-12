@@ -19,6 +19,7 @@ function netopiapayments_init() {
 	
 	// If we made it this far, then include our Gateway Class
 	include_once( 'wc-netopiapayments-gateway.php' );
+	include_once( 'wc-netopiapayments-auth.php' );
 
 	// Now that we have successfully included our class,
 	// Lets add it too WooCommerce
@@ -48,6 +49,7 @@ function netopiapayments_init() {
 			'plugin_url' => getAbsoulutFilePath(),
 			'site_url' => get_site_url(),
 		) );
+		
         wp_enqueue_script( 'netopiatoastrjs', plugin_dir_url( __FILE__ ) . 'js/toastr.min.js',array(),'2.0' ,true);
         wp_enqueue_style( 'netopiatoastrcss', plugin_dir_url( __FILE__ ) . 'css/toastr.min.css',array(),'2.0' ,false);
     }
