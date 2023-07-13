@@ -12,7 +12,7 @@
   // wp_enqueue_script( 'netopiaCredentials', plugin_dir_url( __DIR__ ) . 'js/netopiaCredentials.js',array(),'1.0' ,true); 
   ?>
 <link rel="stylesheet" href="<?php echo plugin_dir_url( __DIR__ ).'/css/custom.css';?>">
-<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js';?>"></script>
+<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js?v=2';?>"></script>
 
   <form class="modal-content animate" method="post">
     <div class="imgcontainer">

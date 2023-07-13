@@ -15,19 +15,20 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("Just a test for Credential test");
     console.log("ntp Username : "+ntpUsername);
     console.log("ntp Pass : "+ntpPassword);
-    console.log(" -------------------------------- ");
+    console.log(" -----C---C--C---C---C--B---B--- ");
 
     // postData(ntpUsername, ntpPassword)
+    sendFormData(ntpUsername, ntpPassword)
 }
 
-// function postData(param1, param2) {
-//     var url = "https://admin.netopia-payments.com/api/auth/login"; // Replace with the URL to which you want to send the POST request
+// function postData(ntpUsername, ntpPassword) {
+//     // var url = "http://localhost/paymentGatewayApi2/index.php/wp-json/netopiapayments/v1/credential/";
+//     var url = "../../../../index.php/wp-json/netopiapayments/v1/credential/";
   
 //     var data = {
 //       login: {
-//         username: "navidTest",
-//         password: "tamasba118",
-//         code: ""
+//         username: ntpUsername,
+//         password: ntpPassword
 //       }
 //     };
   
@@ -57,5 +58,29 @@ document.addEventListener('DOMContentLoaded', function() {
 //         // Handle any errors that occurred during the request
 //       });
 //   }
+
+function sendFormData(username, password) {
+  // Create the form data object
+  var formData = new FormData();
+  formData.append('username', username);
+  formData.append('password', password);
+
+  // Perform the POST request
+  fetch('../../../../index.php/wp-json/netopiapayments/v1/credential', {
+      method: 'POST',
+      body: formData
+  })
+  .then(function(response) {
+      return response.json();
+  })
+  .then(function(data) {
+      // Handle the response data
+      console.log(data);
+  })
+  .catch(function(error) {
+      console.log('Error:', error);
+  });
+}
+
   
   

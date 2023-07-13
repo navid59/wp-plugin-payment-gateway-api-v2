@@ -3,6 +3,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+CONST KYC_STATUS_NEW            = 0;
+CONST KYC_STATUS_SEND           = 1;
+CONST KYC_STATUS_REJECT         = 2;
+CONST KYC_STATUS_STEP_BACK      = 3;
+CONST KYC_STATUS_NEED_REVIEW    = 4;
+CONST KYC_STATUS_APROVED        = 5;
+
+CONST POS_TYPE_CRM              = 0;
+
 // Register the custom endpoint
 add_action('rest_api_init', 'netopiaCustomEndpoint');
 
@@ -50,21 +59,39 @@ function getCredentialCallback($request)
      * 6 - return the Complate Json
      */
 
-     $ntpAccessRes = ntpPlatformnLogin($params);
-     if ($ntpAccessRes['code'] !== 200) {
+     $ntpLiveAccessRes = ntpPlatformnLogin($params, true );
+     if ($ntpLiveAccessRes['code'] !== 200) {
         $data = array(
             'status' => false,
-            'message' => $ntpAccessRes['message'],
-            'details' => $ntpAccessRes,
+            'message' => $ntpLiveAccessRes['message'],
+            'details' => $ntpLiveAccessRes,
             'timestamp' => time(),
         );
         echo json_encode($data);
         exit;
      }
 
-     $ntpSignatures = getNtpSignature($ntpAccessRes['data']['accessKey']);
-     $ntpLiveApiKeys = getNTPApiKey($ntpAccessRes['data']['accessKey'], $isLive = true);
-     $ntpSandboxApiKeys = getNTPApiKey($ntpAccessRes['data']['accessKey'], $isLive = false);
+     $ntpSignatures = validateSignature(getNtpSignature($ntpLiveAccessRes['data']['accessKey'], $isLive = true));
+    //  $ntpSignatures = getNtpSignature($ntpLiveAccessRes['data']['accessKey'], $isLive = true);
+     $ntpLiveApiKeys = validateApiKey(getNTPApiKey($ntpLiveAccessRes['data']['accessKey'], $isLive = true));
+
+    // Get Sandbox Data 
+    //  $ntpSandboxSignatures = getNtpSignature($ntpAccessRes['data']['accessKey'], $isLive = false);
+    $ntpSandboxAccessRes = ntpPlatformnLogin($params, false );
+     if ($ntpSandboxAccessRes['code'] !== 200) {
+        $data = array(
+            'status' => false,
+            'message' => $ntpLiveAccessRes['message'],
+            'details' => $ntpLiveAccessRes,
+            'timestamp' => time(),
+        );
+        // echo json_encode($data);
+        $ntpSandboxApiKeys = $data;
+     } else {
+        $ntpSandboxApiKeys = validateApiKey(getNTPApiKey($ntpSandboxAccessRes['data']['accessKey'], $isLive = false));
+     }
+     
+     
 
     // Retrieve and process data
     $data = array(
@@ -90,7 +117,33 @@ function validateParams(array $params)
     return true;
 }
 
-function ntpPlatformnLogin($params) {
+function validateSignature($signatureArrRes) {
+    if (is_array($signatureArrRes) && count($signatureArrRes['data']['items']) <= 0 )
+        return null;
+
+    $validatedSignaure = array();    
+    foreach ($signatureArrRes['data']['items'] as $signature) {
+        if ($signature['isActive'] && $signature['isApproved']) {
+            if (($signature['kybStatus'] == KYC_STATUS_APROVED) && $signature['type'] == POS_TYPE_CRM ) {
+                $validatedSignaure[] = $signature;
+            }
+        }
+    }
+    return $validatedSignaure;
+}
+
+function validateApiKey($apiKeyArrRes) {
+    if (is_array($apiKeyArrRes) && count($apiKeyArrRes['data']['items']) <= 0 )
+        return null;
+
+    $validatedApiKeys = array();    
+    foreach ($apiKeyArrRes['data']['items'] as $apiKey) {
+            $validatedApiKeys[] = $apiKey;
+    }
+    return $validatedApiKeys;
+}
+
+function ntpPlatformnLogin($params, $isLive) {
     // JSON data to send
     $data = [
             'login' => [
@@ -107,7 +160,11 @@ function ntpPlatformnLogin($params) {
     $ch = curl_init();
 
     // Set the URL
-    $url = 'https://admin.netopia-payments.com/api/auth/login';
+    if ($isLive)
+        $url = 'https://admin.netopia-payments.com/api/auth/login';
+    else 
+        $url = 'https://sandbox.netopia-payments.com/api/auth/login';
+
     curl_setopt($ch, CURLOPT_URL, $url);
 
     // Set the request method to POST
@@ -196,7 +253,7 @@ function ntpPlatformnLogin($params) {
     return $ntpPlatformResponse;
 }
 
-function getNtpSignature($accessKey) {
+function getNtpSignature($accessKey, $isLive) {
     // JSON data to send
     $jsonData = '{}';
 
@@ -204,7 +261,11 @@ function getNtpSignature($accessKey) {
     $ch = curl_init();
 
     // Set the URL
-    $url = 'https://sandbox.netopia-payments.com/api/pos/list';
+    if ($isLive)
+        $url = 'https://admin.netopia-payments.com/api/pos/list';
+    else 
+        $url = 'https://sandbox.netopia-payments.com/api/pos/list';
+
     curl_setopt($ch, CURLOPT_URL, $url);
 
     // Set the request method to POST
@@ -292,7 +353,11 @@ function getNTPApiKey($accessKey, $isLive) {
     $ch = curl_init();
 
     // Set the URL
-    $url = 'https://admin.netopia-payments.com/api/user/api/key/get';
+    if ($isLive)
+        $url = 'https://admin.netopia-payments.com/api/user/api/key/get';
+    else 
+        $url = 'https://sandbox.netopia-payments.com/api/user/api/key/get';
+        
     curl_setopt($ch, CURLOPT_URL, $url);
 
     // Set the request method to GET
