@@ -95,6 +95,7 @@ function getCredentialCallback($request)
 
     // Retrieve and process data
     $data = array(
+        'status' => true,
         'signature' => $ntpSignatures,
         'apiKeyLive' => $ntpLiveApiKeys,
         'apiKeySandbox' => $ntpSandboxApiKeys,

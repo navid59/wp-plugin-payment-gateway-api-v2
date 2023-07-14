@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var loginButton = document.getElementById('loginToNetopiaPlatform');
     loginButton.addEventListener('click', function(e){
       e.preventDefault();
+      document.getElementById('ntpLoader').style.display = "block";
+      document.getElementById('ntpPlatformAuthAlarm').style.display = "none";
       getNetopiaPlatformCredentials();
     });
   });
@@ -15,70 +17,50 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("Just a test for Credential test");
     console.log("ntp Username : "+ntpUsername);
     console.log("ntp Pass : "+ntpPassword);
-    console.log(" -----C---C--C---C---C--B---B--- ");
-
-    // postData(ntpUsername, ntpPassword)
+    console.log(" -----C---C--C---C---C--C---C--- ");
+    
+    // Call WP Rest API and return Credential:
     sendFormData(ntpUsername, ntpPassword)
+    .then(function(response) {
+      document.getElementById('ntpLoader').style.display = "none";
+      // Access the properties and values in the response object
+      console.log(response);
+      if(response.status) {
+        document.getElementById("ntpPlatformAuthAlarm").style.display = "none";
+      } else {
+        document.getElementById("ntpPlatformAuthAlarmContent").innerHTML = response.message;
+        document.getElementById("ntpPlatformAuthAlarm").style.display = "block";
+      }
+    })
+    .catch(function(error) {
+      document.getElementById('ntpLoader').style.display = "none";
+      console.log(error);
+    });
 }
 
-// function postData(ntpUsername, ntpPassword) {
-//     // var url = "http://localhost/paymentGatewayApi2/index.php/wp-json/netopiapayments/v1/credential/";
-//     var url = "../../../../index.php/wp-json/netopiapayments/v1/credential/";
-  
-//     var data = {
-//       login: {
-//         username: ntpUsername,
-//         password: ntpPassword
-//       }
-//     };
-  
-//     var headers = new Headers();
-//     headers.append("Content-Type", "application/json");
-  
-//     fetch(url, {
-//       method: "POST",
-//       headers: headers,
-//       body: JSON.stringify(data),
-//       credentials: "include", // Include cookies in the request
-//       mode: "cors" // Set request mode to "cors"
-//     })
-//       .then(response => {
-//         if (response.ok) {
-//           return response.json();
-//         } else {
-//           throw new Error("Error: " + response.status);
-//         }
-//       })
-//       .then(responseData => {
-//         console.log("Response:", responseData);
-//         // Handle the response data here
-//       })
-//       .catch(error => {
-//         console.log("Error:", error.message);
-//         // Handle any errors that occurred during the request
-//       });
-//   }
 
 function sendFormData(username, password) {
-  // Create the form data object
-  var formData = new FormData();
-  formData.append('username', username);
-  formData.append('password', password);
+  return new Promise(function(resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost/paymentGatewayApi2/index.php/wp-json/netopiapayments/v1/credential/', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-  // Perform the POST request
-  fetch('../../../../index.php/wp-json/netopiapayments/v1/credential', {
-      method: 'POST',
-      body: formData
-  })
-  .then(function(response) {
-      return response.json();
-  })
-  .then(function(data) {
-      // Handle the response data
-      console.log(data);
-  })
-  .catch(function(error) {
-      console.log('Error:', error);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var jsonResponse = JSON.parse(xhr.responseText);
+        resolve(jsonResponse);
+      } else {
+        reject('Request failed. Status: ' + xhr.status);
+      }
+    };
+
+    xhr.onerror = function() {
+      reject('Request error');
+    };
+
+    var requestBody = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
+
+    xhr.send(requestBody);
   });
 }
 
