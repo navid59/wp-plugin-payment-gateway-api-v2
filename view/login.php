@@ -6,20 +6,15 @@
    */
 
   require_once('../../../../wp-load.php');
-  // echo bloginfo('version')."<br>";
-  // echo plugin_dir_url( __FILE__ )."<br>";;
-  // echo plugin_dir_url( __DIR__ )."<br>";
-  // wp_enqueue_script( 'netopiaCredentials', plugin_dir_url( __DIR__ ) . 'js/netopiaCredentials.js',array(),'1.0' ,true); 
   ?>
 <link rel="stylesheet" href="<?php echo plugin_dir_url( __DIR__ ).'css/custom.css';?>">
-<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js?v=2';?>"></script>
+<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js?v=3';?>"></script>
+  <div class="imgcontainer">
+    <span onclick="self.close();" class="close" title="Close Modal">&times;</span>
+    <img src="../img/NETOPIA_Payments.svg" alt="Avatar" class="avatar" width="250px">
+  </div>
 
-  <form class="modal-content animate" method="post">
-    <div class="imgcontainer">
-      <span onclick="self.close();" class="close" title="Close Modal">&times;</span>
-      <img src="../img/NETOPIA_Payments.svg" alt="Avatar" class="avatar" width="250px">
-    </div>
-
+  <form id="ntpPlatformLoginForm" class="modal-content animate" method="post">
     <div class="container">
       <label for="username"><b>Username</b></label>
       <input type="text" placeholder="Enter Username" id="ntpUsername" name="username" required>
@@ -43,3 +38,27 @@
       <span id="ntpLoader" style="display: none;"><div class="spin"></div></span>
     </div>
   </form>
+
+
+  <form id="ntpPlatformCredentialDataForm" class="modal-content animate" method="post" style="display: block;">
+  <fieldset id="signature">
+    <legend><b>Preferred POS signature:</b></legend>
+    <div id="signatureList"></div>
+  </fieldset>
+  <fieldset id="apiKeyLive">
+    <legend><b>API Key for production environment:</b></legend>
+    <div id="apiKeyLiveList"></div>
+  </fieldset>
+  <fieldset id="apiKeySandbox">
+    <legend><b>API Key for sandbox environment:</b></legend>
+    <div id="apiKeySandboxList"></div>
+  </fieldset>
+  
+  <label class="container">
+    <input type="checkbox" required>
+    <span class="checkmark"></span>Agree to use the selected Credentials for configuration
+  </label>
+  <div>
+    <button type="submit">Confirm</button>
+  </div>
+</form>

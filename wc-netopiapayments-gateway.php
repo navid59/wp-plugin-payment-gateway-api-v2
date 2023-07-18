@@ -25,6 +25,7 @@ class netopiapayments extends WC_Payment_Gateway {
         $this->has_fields             = true;
         $this->notify_url             = WC()->api_request_url( 'netopiapayments' );	// IPN URL - WC REST API
         $this->envMod                 = MODE_STARTUP;
+        // $this->envMod                 = MODE_NORMAL;
         
 
         /**

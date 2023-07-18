@@ -14,10 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var ntpUsername = document.getElementById('ntpUsername').value;
     var ntpPassword = document.getElementById('ntpPassword').value;
     
-    console.log("Just a test for Credential test");
-    console.log("ntp Username : "+ntpUsername);
-    console.log("ntp Pass : "+ntpPassword);
-    console.log(" -----C---C--C---C---C--C---C--- ");
+    // console.log("ntp Username : "+ntpUsername);
+    // console.log("ntp Pass : "+ntpPassword);
+    
     
     // Call WP Rest API and return Credential:
     sendFormData(ntpUsername, ntpPassword)
@@ -27,6 +26,18 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log(response);
       if(response.status) {
         document.getElementById("ntpPlatformAuthAlarm").style.display = "none";
+        document.getElementById("ntpPlatformLoginForm").style.display = "none";
+        document.getElementById("ntpPlatformCredentialDataForm").style.display = "block";
+
+          // Populate section 1: Signature
+          createSignatureRadioOptions('signatureList', response.signature);
+
+          // Populate section 2: apiKeyLive
+          createApiKeyRadioOptions('apiKeyLiveList', response.apiKeyLive);
+
+          // Populate section 3: apiKeySandbox
+          createApiKeyRadioOptions('apiKeySandboxList', response.apiKeySandbox);
+
       } else {
         document.getElementById("ntpPlatformAuthAlarmContent").innerHTML = response.message;
         document.getElementById("ntpPlatformAuthAlarm").style.display = "block";
@@ -61,6 +72,42 @@ function sendFormData(username, password) {
     var requestBody = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
 
     xhr.send(requestBody);
+  });
+}
+
+// Create Signature radio box options 
+function createSignatureRadioOptions(sectionId, dataArray) {
+  var section = document.getElementById(sectionId);
+
+  dataArray.forEach(function(item) {
+    var radioLabel = document.createElement('label');
+    var radioInput = document.createElement('input');
+    radioInput.type = 'radio';
+    radioInput.name = sectionId;
+    radioInput.value = item.posSignature;
+
+    radioLabel.appendChild(radioInput);
+    radioLabel.appendChild(document.createTextNode(item.posSignature));
+    section.appendChild(radioLabel);
+  });
+}
+
+// Create Api Key radio box options 
+function createApiKeyRadioOptions(sectionId, dataArray) {
+  console.log(dataArray);
+  console.log("---------------------");
+
+  var section = document.getElementById(sectionId);
+  dataArray.forEach(function(item) {
+    var radioLabel = document.createElement('label');
+    var radioInput = document.createElement('input');
+    radioInput.type = 'radio';
+    radioInput.name = sectionId;
+    radioInput.value = item.key;
+
+    radioLabel.appendChild(radioInput);
+    radioLabel.appendChild(document.createTextNode(item.key));
+    section.appendChild(radioLabel);
   });
 }
 
