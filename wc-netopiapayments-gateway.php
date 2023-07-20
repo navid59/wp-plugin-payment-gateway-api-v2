@@ -66,81 +66,48 @@ class netopiapayments extends WC_Payment_Gateway {
      */
 	public function init_form_fields() {
         $this->form_fields = array(
-         'enabled' => array(
-          'title'        => __( 'Enable / Disable', 'netopiapayments' ),
-          'label'        => __( 'Enable this payment gateway', 'netopiapayments' ),
-          'type'         => 'checkbox',
-          'description' => __( 'Disable / Enable of NETOPIA Payment method.', 'netopiapayments' ),
-          'desc_tip'    => true,
-          'default'      => 'no',
-         ),
-         'environment'  => array(
-          'title'       => __( 'NETOPIA Payments Test Mode', 'netopiapayments' ),
-          'label'       => __( 'Enable Test Mode', 'netopiapayments' ),
-          'type'        => 'checkbox',
-          'description' => __( 'Place the payment gateway in test mode.', 'netopiapayments' ),
-          'desc_tip'    => true,
-          'default'     => 'no',
-         ),
-         'title' => array(
-          'title'       => __( 'Title', 'netopiapayments' ),
-          'type'        => 'text',
-          'description' => __( 'Payment title the customer will see during the checkout process.', 'netopiapayments' ),
-          'desc_tip'    => true,
-          'default'     => __( 'NETOPIA Payments', 'netopiapayments' ),
-         ),
-         'description'  => array(
-          'title'       => __( 'Description', 'netopiapayments' ),
-          'type'        => 'textarea',
-          'description' => __( 'Payment description the customer will see during the checkout process.', 'netopiapayments' ),
-          'desc_tip'    => true,
-          'css'         => 'max-width:350px;',
-         ),
-         'default_status' => array(
-          'title'        => __( 'Default status', 'netopiapayments' ),
-          'type'         => 'select',
-          'description'  => __( 'Default status of transaction.', 'netopiapayments' ),
-          'desc_tip'     => true,
-          'default'      => 'processing',
-          'options'      => array(
-          'completed'    => __('Completed'),
-          'processing'   => __('Processing'),
-           ),
-          'css'       => 'max-width:350px;',
-        ),
-        //  'wizard_setting' => array(
-        //         'title'       => __( 'Config Wizard', 'netopiapayments' ),
-        //         'type'        => 'title',
-        //         'description' => __('Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>
-        //          Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type<br>
-        //           and scrambled it to make a type specimen book. <br>
-        //           <br>
-        //           It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.<br>
-        //            It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
-        //     ),
-        //  'key_setting' => array(
-        //         'title'       => __( 'Seller Account', 'netopiapayments' ),
-        //         'type'        => 'title',
-        //         'description' => '',
-        //     ),
-        //  'account_id' => array(
-        //   'title'        => __( 'Seller Account ID', 'netopiapayments' ),
-        //   'type'        => 'text',
-        //   'desc_tip'    => __( 'Seller Account ID / Merchant POS identifier, is available in your NETOPIA account.', 'netopiapayments' ),
-        //   'description'	=> __( 'Find it from NETOPIA Payments admin -> Seller Accounts -> Technical settings.', 'netopiapayments' ),
-        //  ),
-        //  'live_api_key' => array(
-        //   'title'        => __( 'Live API Key: ', 'netopiapayments' ),
-        //   'type'        => 'text',
-        //   'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
-        //   'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
-        //  ),
-        //  'sandbox_api_key' => array(
-        //   'title'        => __( 'Sandbox API Key: ', 'netopiapayments' ),
-        //   'type'        => 'text',
-        //   'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
-        //   'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
-        //  ),
+            'enabled' => array(
+            'title'        => __( 'Enable / Disable', 'netopiapayments' ),
+            'label'        => __( 'Enable this payment gateway', 'netopiapayments' ),
+            'type'         => 'checkbox',
+            'description' => __( 'Disable / Enable of NETOPIA Payment method.', 'netopiapayments' ),
+            'desc_tip'    => true,
+            'default'      => 'no',
+            ),
+            'environment'  => array(
+            'title'       => __( 'NETOPIA Payments Test Mode', 'netopiapayments' ),
+            'label'       => __( 'Enable Test Mode', 'netopiapayments' ),
+            'type'        => 'checkbox',
+            'description' => __( 'Place the payment gateway in test mode.', 'netopiapayments' ),
+            'desc_tip'    => true,
+            'default'     => 'no',
+            ),
+            'title' => array(
+            'title'       => __( 'Title', 'netopiapayments' ),
+            'type'        => 'text',
+            'description' => __( 'Payment title the customer will see during the checkout process.', 'netopiapayments' ),
+            'desc_tip'    => true,
+            'default'     => __( 'NETOPIA Payments', 'netopiapayments' ),
+            ),
+            'description'  => array(
+            'title'       => __( 'Description', 'netopiapayments' ),
+            'type'        => 'textarea',
+            'description' => __( 'Payment description the customer will see during the checkout process.', 'netopiapayments' ),
+            'desc_tip'    => true,
+            'css'         => 'max-width:350px;',
+            ),
+            'default_status' => array(
+            'title'        => __( 'Default status', 'netopiapayments' ),
+            'type'         => 'select',
+            'description'  => __( 'Default status of transaction.', 'netopiapayments' ),
+            'desc_tip'     => true,
+            'default'      => 'processing',
+            'options'      => array(
+            'completed'    => __('Completed'),
+            'processing'   => __('Processing'),
+            ),
+            'css'       => 'max-width:350px;',
+            )
         );
 
         if ($this->envMod == MODE_STARTUP ) {

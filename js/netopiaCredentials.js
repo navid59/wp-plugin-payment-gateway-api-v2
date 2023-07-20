@@ -79,17 +79,27 @@ function sendFormData(username, password) {
 function createSignatureRadioOptions(sectionId, dataArray) {
   var section = document.getElementById(sectionId);
 
+  // Check if dataArray is empty
+  if (!Array.isArray(dataArray) || dataArray.length === 0) {
+    document.getElementById("ntpSignatoreAlarmContent").innerHTML = 'Unable to get Pos Signature. Make sure if you already have at least one ACTIVE & APPROVED point of sales.';
+    document.getElementById('ntpSignatureLoader').style.display = "none";
+    document.getElementById('ntpSignatoreAlarm').style.display = "block";
+    return;
+  }
+
   dataArray.forEach(function(item) {
     var radioLabel = document.createElement('label');
     var radioInput = document.createElement('input');
     radioInput.type = 'radio';
     radioInput.name = sectionId;
     radioInput.value = item.posSignature;
+    radioInput.required = true;
 
     radioLabel.appendChild(radioInput);
     radioLabel.appendChild(document.createTextNode(item.posSignature));
     section.appendChild(radioLabel);
   });
+  document.getElementById('ntpSignatureLoader').style.display = "none";
 }
 
 // Create Api Key radio box options 
@@ -98,17 +108,39 @@ function createApiKeyRadioOptions(sectionId, dataArray) {
   console.log("---------------------");
 
   var section = document.getElementById(sectionId);
+
+  // Check if dataArray is empty
+  if (!Array.isArray(dataArray) || dataArray.length === 0) {
+    if(sectionId === 'apiKeyLiveList') {
+      document.getElementById("ntpApiKeyLiveAlarmContent").innerHTML = 'Unable to get any Apikey for LIVE. Make sure if you already created one.';
+      document.getElementById('ntpApiKeyLiveLoader').style.display = "none";
+      document.getElementById('ntpApiKeyLiveAlarm').style.display = "block";
+    } else if(sectionId === 'apiKeySandboxList'){
+      document.getElementById("ntpApiKeySandboxAlarmContent").innerHTML = 'Unable to get any Apikey for Sandbox. Make sure if you already created one.';
+      document.getElementById('ntpApiKeySandboxLoader').style.display = "none";
+      document.getElementById('ntpApiKeySandboxAlarm').style.display = "block";
+    }    
+    return;
+  }
+
   dataArray.forEach(function(item) {
     var radioLabel = document.createElement('label');
     var radioInput = document.createElement('input');
     radioInput.type = 'radio';
     radioInput.name = sectionId;
     radioInput.value = item.key;
+    radioInput.required = true;
 
     radioLabel.appendChild(radioInput);
     radioLabel.appendChild(document.createTextNode(item.key));
     section.appendChild(radioLabel);
   });
+
+  if(sectionId === 'apiKeyLiveList') {
+    document.getElementById('ntpApiKeyLiveLoader').style.display = "none";
+  } else if(sectionId === 'apiKeySandboxList') {
+    document.getElementById('ntpApiKeySandboxLoader').style.display = "none";
+  }
 }
 
   

@@ -13,19 +13,33 @@ input[type=text], input[type=password] {
 
   /* Set a style for all buttons */
 button {
-    background-color: #2271b1;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 100%;
   }
   
   button:hover {
     opacity: 0.8;
   }
-  
+
+  .ntp-login-btn {
+    background-color: #2271b1;
+    width: 100%;
+  }
+
+  .ntp-confirm-btn {
+    background-color: #2271b1;
+    width: 45%;
+  }
+
+  /* Extra styles for the cancel button */
+  .ntp-try-btn {
+    background-color: #17a2b8;
+    width: 45%;
+  }
+
   /* Extra styles for the cancel button */
   .cancelbtn {
     width: auto;
@@ -117,6 +131,30 @@ button {
     transform: translate3d(-50%, -50%, 0);
     will-change: transform;
   }
+
+
+  .spin-credential {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    margin-top: 20px;
+  }
+
+  .spin-credential::before {
+    animation: 1.5s linear infinite spinner;
+    animation-play-state: inherit;
+    border: solid 5px #cfd0d1;
+    border-bottom-color: #1c87c9;
+    border-radius: 50%;
+    content: "";
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    /* top: 10%;
+    left: 10%; */
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
+  }
   
 
   /* Alert Box  */
@@ -155,3 +193,6 @@ fieldset {
   margin: 0px 0px 8px 0px;
 }
 
+.ntp-credential-list label {
+  display: block;
+}
