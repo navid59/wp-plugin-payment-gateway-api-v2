@@ -17,14 +17,73 @@ add_action('rest_api_init', 'netopiaCustomEndpoint');
 
 function netopiaCustomEndpoint()
 {
-    // Register the endpoint
+    // Register the credential endpoint
     register_rest_route('netopiapayments/v1', '/credential', array(
         'methods' => 'POST',
         'callback' => 'getCredentialCallback',
     ));
+
+    // Register the credential endpoint
+    register_rest_route('netopiapayments/v1', '/updatecredential', array(
+        'methods' => 'POST',
+        'callback' => 'updateCredentialCallback',
+    ));
 }
 
-// Callback function to handle the request
+
+// Callback function to handle the get credential request
+function updateCredentialCallback($request)
+{
+    // Predefine response data
+    $data = array();
+
+    // Create a new response object
+    $response = new WP_REST_Response();
+    // var_dump($response);
+
+    // Get the request parameters
+    $params = $request->get_params();
+    // var_dump($params);
+
+    // Retrieve and process data
+    $data = array(
+        // 'response' => $response,
+        'params' => $params,
+        'timestamp' => time(),
+    );
+
+    ////////////////
+    
+    
+
+    // Get the existing settings option
+    $settings_serialized = get_option('woocommerce_netopiapayments_settings');
+
+    // If the option exists and is not empty, unserialize the data
+    if ($settings_serialized !== false && !empty($settings_serialized)) {
+        $settings = maybe_unserialize($settings_serialized);
+    } else {
+        // If the option doesn't exist or is empty, start with an empty array
+        $settings = array();
+    }
+
+    // Update the settings with the provided values
+    $settings['account_id'] = $params['signature'];
+    $settings['live_api_key'] = $params['apiKeyLive'];
+    $settings['sandbox_api_key'] = $params['apiKeySandbox'];
+
+    // Save the updated settings options
+    update_option('woocommerce_netopiapayments_settings', $settings);
+
+    ////////////////
+
+    $response = $data;
+    // $response->set_status(200);
+    echo json_encode($response);
+
+}
+
+// Callback function to handle the get credential request
 function getCredentialCallback($request)
 {
     // Predefine response data
@@ -72,11 +131,9 @@ function getCredentialCallback($request)
      }
 
      $ntpSignatures = validateSignature(getNtpSignature($ntpLiveAccessRes['data']['accessKey'], $isLive = true));
-    //  $ntpSignatures = getNtpSignature($ntpLiveAccessRes['data']['accessKey'], $isLive = true);
      $ntpLiveApiKeys = validateApiKey(getNTPApiKey($ntpLiveAccessRes['data']['accessKey'], $isLive = true));
 
     // Get Sandbox Data 
-    //  $ntpSandboxSignatures = getNtpSignature($ntpAccessRes['data']['accessKey'], $isLive = false);
     $ntpSandboxAccessRes = ntpPlatformnLogin($params, false );
      if ($ntpSandboxAccessRes['code'] !== 200) {
         $data = array(

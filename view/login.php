@@ -80,7 +80,12 @@
     <span class="checkmark"></span>Agree to use the selected Credentials for configuration
   </label>
   <div style="text-align: center;">
-    <button type="submit" class="ntp-confirm-btn">Confirm</button>
+    <button type="button" class="ntp-confirm-btn" onclick="displaySelected();" >Confirm</button>
     <button type="button" class="ntp-try-btn" onClick="window.location.reload();">try again</button>
   </div>
 </form>
+<hr>
+<!-- Separate div to display selected radio box options -->
+<div id="selectedOptions"></div>
+<hr>
+<div id="wpRestResponse"></div>

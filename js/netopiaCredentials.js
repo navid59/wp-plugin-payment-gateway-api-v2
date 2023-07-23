@@ -143,5 +143,83 @@ function createApiKeyRadioOptions(sectionId, dataArray) {
   }
 }
 
+ // Function to display selected radio box options
+ function displaySelected() {
+  // Get the selected radio box options from each section
+  var selectedSignature = document.querySelector('input[name="signatureList"]:checked');
+  var selectedApiKeyLive = document.querySelector('input[name="apiKeyLiveList"]:checked');
+  var selectedApiKeySandbox = document.querySelector('input[name="apiKeySandboxList"]:checked');
+
+  // alert("1 ) "+selectedSignature.value);
+  // alert("2 ) "+selectedApiKeyLive.value);
+  // alert("3) "+selectedApiKeySandbox.value);
+
+  // Validate if the selected options are not empty
+  if (!selectedSignature && !selectedApiKeyLive && !selectedApiKeySandbox) {
+    alert('Please select at least one option.');
+    return;
+  }
+
+  // Create a message displaying the selected options
+  var message = "Selected Options:\n";
+  if (selectedSignature) {
+    message += "Signature: " + selectedSignature.value + "\n";
+  }
+  if (selectedApiKeyLive) {
+    message += "API Key for production environment: " + selectedApiKeyLive.value + "\n";
+  }
+  if (selectedApiKeySandbox) {
+    message += "API Key for sandbox environment: " + selectedApiKeySandbox.value + "\n";
+  }
+
+  // Display the selected options
+  var selectedOptionsDiv = document.getElementById('selectedOptions');
+  selectedOptionsDiv.innerText = message;
+
+  alert("Data will send to Wp Rest API");
+  // self.close();
+  // document.getElementById('woocommerce_netopiapayments_account_id').value = "This is the data what is changed";
+
+  // Display the response of wp update endpoint 
+  var wpRestResponse = document.getElementById('wpRestResponse');
+    
+  // Send the selected values to another URL (replace 'your_url' with the actual URL)
+  var formData = new FormData();
+  if (selectedSignature) {
+    formData.append('signature', selectedSignature.value);
+  }
+  if (selectedApiKeyLive) {
+    formData.append('apiKeyLive', selectedApiKeyLive.value);
+  }
+  if (selectedApiKeySandbox) {
+    formData.append('apiKeySandbox', selectedApiKeySandbox.value);
+  }
+
+  // Perform the form update the credential Data
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'http://localhost/paymentGatewayApi2/index.php/wp-json/netopiapayments/v1/updatecredential/', true);
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      // Display the result of the request
+      var response = JSON.parse(xhr.responseText);
+      wpRestResponse.innerText += '\n\nResponse from server1) :\n' + response;
+      // wpRestResponse.innerText += '\n\nResponse from server1) :\n' + response.data.params.signature;
+      // wpRestResponse.innerText += '\n\nResponse from server2) :\n' + response.data.params.apiKeyLive;
+      // wpRestResponse.innerText += '\n\nResponse from server3) :\n' + response.data.params.apiKeySandbox;
+      console.log(response);
+    } else {
+      // Log error if there is an issue with the request
+      console.error('Error occurred:', xhr.statusText);
+    }
+  };
+  xhr.onerror = function () {
+    // Log error if there is a network error
+    console.error('Network error occurred.');
+  };
+  xhr.send(formData);
+  
+
+}
+
   
   

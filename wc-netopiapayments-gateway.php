@@ -110,7 +110,7 @@ class netopiapayments extends WC_Payment_Gateway {
             )
         );
 
-        if ($this->envMod == MODE_STARTUP ) {
+        // if ($this->envMod == MODE_STARTUP ) {
             $this->form_fields['wizard_setting'] =  array(
                                                     'title'       => '',
                                                     'type'        => 'title',
@@ -129,7 +129,7 @@ class netopiapayments extends WC_Payment_Gateway {
                                                     'description'       => __( 'Configure your plugin for NETOPIA Payments Method automatically!', 'netopiapayments' ),
                                                     'desc_tip'          => true,
                                                 );
-        } else {
+        // } else {
             $this->form_fields['key_setting'] = array(
                                                     'title'       => __( 'Seller Account', 'netopiapayments' ),
                                                     'type'        => 'title',
@@ -153,7 +153,7 @@ class netopiapayments extends WC_Payment_Gateway {
                                                         'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
                                                         'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
                                                     );
-        }
+        // }
     }
 
     /**
