@@ -114,12 +114,12 @@ class netopiapayments extends WC_Payment_Gateway {
             $this->form_fields['wizard_setting'] =  array(
                                                     'title'       => '',
                                                     'type'        => 'title',
-                                                    'description' => __('Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>
-                                                    Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type<br>
-                                                    and scrambled it to make a type specimen book. <br>
-                                                    <br>
-                                                    It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.<br>
-                                                    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
+                                                    'description' => __("To ensure the smooth and optimal functioning of our NETOPIA Payments wodpress plugin, it is imperative to have <br>
+                                                    an active `<b>Signature</b>` and at least one `<b>API Key</b>` These fundamental components are the backbone of our plugin's capabilities.</br></br>
+                                                    To get started, simply click on <b>Configuration</b> button, where you'll be prompted to enter your <b>Username</b> and <b>password</b> form NETOPIA paltform.<br>
+                                                    Once authenticated, the wizard will automatically return and configure your `<b>Signature</b>`, `<b>Livw API Key</b>` & `<b>Sandbox API Key</b>`<br><br>
+                                                    The `<b>Sandbox API Key</b>` is not obligatory but highly recommended. <br>
+                                                    It serves as a virtual playground, allowing you to thoroughly test your plugin implementation before moving into a production/live environment.", 'netopiapayments' ),
                                                 );
             
             $this->form_fields['wizard_button'] = array(
