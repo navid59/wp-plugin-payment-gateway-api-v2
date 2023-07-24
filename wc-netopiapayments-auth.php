@@ -178,8 +178,16 @@ function validateParams(array $params)
 }
 
 function validateSignature($signatureArrRes) {
-    if (is_array($signatureArrRes) && count($signatureArrRes['data']['items']) <= 0 )
+    
+    // check if account has any "Pointc de vanzare"
+    if ($signatureArrRes['data']['count'] <= 0 ){
         return null;
+    }
+
+    if (is_array($signatureArrRes['data']['items']) && count($signatureArrRes['data']['items']) <= 0 ){
+        return null;
+    }
+        
 
     $validatedSignaure = array();    
     foreach ($signatureArrRes['data']['items'] as $signature) {
@@ -193,7 +201,8 @@ function validateSignature($signatureArrRes) {
 }
 
 function validateApiKey($apiKeyArrRes) {
-    if (is_array($apiKeyArrRes) && count($apiKeyArrRes['data']['items']) <= 0 )
+    
+    if (is_array($apiKeyArrRes['data']) && count($apiKeyArrRes['data']) <= 0 )
         return null;
 
     $validatedApiKeys = array();    
