@@ -110,7 +110,7 @@ class netopiapayments extends WC_Payment_Gateway {
             )
         );
 
-        // if ($this->envMod == MODE_STARTUP ) {
+        if ($this->envMod == MODE_STARTUP ) {
             $this->form_fields['wizard_setting'] =  array(
                                                     'title'       => '',
                                                     'type'        => 'title',
@@ -123,13 +123,35 @@ class netopiapayments extends WC_Payment_Gateway {
                                                 );
             
             $this->form_fields['wizard_button'] = array(
-                                                    'title'             => __( 'Start Configuration!', 'netopiapayments' ),
+                                                    'title'             => __( 'Configuration!', 'netopiapayments' ),
                                                     'type'              => 'button',
                                                     'custom_attributes' => array(),
                                                     'description'       => __( 'Configure your plugin for NETOPIA Payments Method automatically!', 'netopiapayments' ),
                                                     'desc_tip'          => true,
                                                 );
-        // } else {
+            // Add the feilds in hidden type
+            $this->form_fields['account_id'] = array(
+                                                    'title'        => __( 'Seller Account ID', 'netopiapayments' ),
+                                                    'type'        => 'text',
+                                                    'desc_tip'    => __( 'Seller Account ID / Merchant POS identifier, is available in your NETOPIA account.', 'netopiapayments' ),
+                                                    'description'	=> __( 'Find it from NETOPIA Payments admin -> Seller Accounts -> Technical settings.', 'netopiapayments' ),
+                                                    'custom_attributes' => array('readonly' => 'readonly')
+                                                );
+            $this->form_fields['live_api_key'] = array(
+                                                    'title'        => __( 'Live API Key: ', 'netopiapayments' ),
+                                                    'type'        => 'text',
+                                                    'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
+                                                    'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
+                                                    'custom_attributes' => array('readonly' => 'readonly')
+                                                );
+            $this->form_fields['sandbox_api_key'] = array(
+                                                    'title'        => __( 'Sandbox API Key: ', 'netopiapayments' ),
+                                                    'type'        => 'text',
+                                                    'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
+                                                    'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
+                                                    'custom_attributes' => array('readonly' => 'readonly')
+                                                );
+        } else {
             $this->form_fields['key_setting'] = array(
                                                     'title'       => __( 'Seller Account', 'netopiapayments' ),
                                                     'type'        => 'title',
@@ -153,7 +175,7 @@ class netopiapayments extends WC_Payment_Gateway {
                                                         'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
                                                         'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
                                                     );
-        // }
+        }
     }
 
     /**

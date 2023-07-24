@@ -75,17 +75,22 @@
     </div>
   </fieldset>
   
-  <label class="container">
+  <!-- <label class="container">
     <input type="checkbox" required>
     <span class="checkmark"></span>Agree to use the selected Credentials for configuration
-  </label>
+  </label> -->
   <div style="text-align: center;">
-    <button type="button" class="ntp-confirm-btn" onclick="displaySelected();" >Confirm</button>
-    <button type="button" class="ntp-try-btn" onClick="window.location.reload();">try again</button>
+    <button type="button" id="ntp-confirm-btn" class="ntp-confirm-btn" onclick="displaySelected();" >Confirm</button>
+    <!-- <button type="button" class="ntp-try-btn" onClick="window.location.reload();">try again</button> -->
+    <button type="button" class="ntp-try-btn" onclick="self.close();">Close</button>
   </div>
 </form>
 <hr>
 <!-- Separate div to display selected radio box options -->
-<div id="selectedOptions"></div>
-<hr>
-<div id="wpRestResponse"></div>
+<div id="selectedOptions" class="alert info" style="display: none;">
+  <span style="color: #333;">Selected Signature : </span><span id="selectedSignatureValue"></span><br>
+  <span style="color: #333;">Selected Live Api Key : </span><span id="selectedLiveApiKeyValue"></span><br>
+  <span style="color: #333;">Selected Sandbox Api Key : </span><span id="selectedSandboxApiKeyValue"></span>
+</div>
+<br>
+<div id="wpRestResponse" class="alert success" style="text-align: center; display: none;"></div>

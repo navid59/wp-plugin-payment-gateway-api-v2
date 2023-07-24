@@ -9,11 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
       openPopupWindow(netopiaUIPath_dataSiteUrl + netopiaUIPath_dataPluginUrl+'view/login.php', 'Popup Form', 700, 700);
     });
 
-    var loginButton = document.getElementById('loginToNetopiaPlatform');
-    loginButton.addEventListener('click', function(e){
-      e.preventDefault();
-      getNetopiaPlatformCredentials();
-    });
+    // var loginButton = document.getElementById('loginToNetopiaPlatform');
+    // loginButton.addEventListener('click', function(e){
+    //   e.preventDefault();
+    //   getNetopiaPlatformCredentials();
+    // });
   });
   
   function openPopupWindow(url, title, width, height) {
@@ -23,7 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
     window.open(url, title, options);
   }
 
-  function getNetopiaPlatformCredentials(){
-    alert("The Credential JS called");
-    console.log("Just a test for Credential test");
-}
+  // Function to handle the popup window close event
+  function handlePopupWindowClose() {
+    
+    // Reload the parent window (NETOPIA Payments admin page)
+    location.reload();
+
+
+  }

@@ -21,12 +21,14 @@ function netopiaCustomEndpoint()
     register_rest_route('netopiapayments/v1', '/credential', array(
         'methods' => 'POST',
         'callback' => 'getCredentialCallback',
+        'permission_callback' => '__return_true'
     ));
 
     // Register the credential endpoint
     register_rest_route('netopiapayments/v1', '/updatecredential', array(
         'methods' => 'POST',
         'callback' => 'updateCredentialCallback',
+        'permission_callback' => '__return_true'
     ));
 }
 
