@@ -34,6 +34,11 @@ button {
     width: 45%;
   }
 
+  .ntp-try-btn {
+    background-color: #2271b1;
+    width: 45%;
+  }
+
   /* Extra styles for the cancel button */
   .ntp-try-btn {
     background-color: #17a2b8;

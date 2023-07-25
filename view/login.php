@@ -8,7 +8,7 @@
   require_once('../../../../wp-load.php');
   ?>
 <link rel="stylesheet" href="<?php echo plugin_dir_url( __DIR__ ).'css/custom.css';?>">
-<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js?v=3';?>"></script>
+<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js?v=4';?>"></script>
   <div class="imgcontainer">
     <span onclick="self.close();" class="close" title="Close Modal">&times;</span>
     <img src="../img/NETOPIA_Payments.svg" alt="Avatar" class="avatar" width="250px">
@@ -80,9 +80,9 @@
     <span class="checkmark"></span>Agree to use the selected Credentials for configuration
   </label> -->
   <div style="text-align: center;">
+    <button type="button" id="ntp-try-btn" class="ntp-try-btn" onClick="window.location.reload();" style="display: none;">try again</button>
     <button type="button" id="ntp-confirm-btn" class="ntp-confirm-btn" onclick="displaySelected();" >Confirm</button>
-    <!-- <button type="button" class="ntp-try-btn" onClick="window.location.reload();">try again</button> -->
-    <button type="button" class="ntp-try-btn" onclick="self.close();">Close</button>
+    <button type="button" class="ntp-close-btn" onclick="self.close();">Close</button>
   </div>
 </form>
 <hr>

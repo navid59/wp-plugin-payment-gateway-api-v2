@@ -12,31 +12,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function getNetopiaPlatformCredentials(){
     var ntpUsername = document.getElementById('ntpUsername').value;
-    var ntpPassword = document.getElementById('ntpPassword').value;
-    
-    // console.log("ntp Username : "+ntpUsername);
-    // console.log("ntp Pass : "+ntpPassword);
-    
+    var ntpPassword = document.getElementById('ntpPassword').value;  
     
     // Call WP Rest API and return Credential:
     sendFormData(ntpUsername, ntpPassword)
     .then(function(response) {
       document.getElementById('ntpLoader').style.display = "none";
+
       // Access the properties and values in the response object
-      console.log(response);
       if(response.status) {
         document.getElementById("ntpPlatformAuthAlarm").style.display = "none";
         document.getElementById("ntpPlatformLoginForm").style.display = "none";
         document.getElementById("ntpPlatformCredentialDataForm").style.display = "block";
 
           // Populate section 1: Signature
-          createSignatureRadioOptions('signatureList', response.signature);
+          var hasSignature = createSignatureRadioOptions('signatureList', response.signature);
 
           // Populate section 2: apiKeyLive
-          createApiKeyRadioOptions('apiKeyLiveList', response.apiKeyLive);
+          var hasLiveApiKey = createApiKeyRadioOptions('apiKeyLiveList', response.apiKeyLive);
 
           // Populate section 3: apiKeySandbox
-          createApiKeyRadioOptions('apiKeySandboxList', response.apiKeySandbox);
+          var hasSandboxApiKey = createApiKeyRadioOptions('apiKeySandboxList', response.apiKeySandbox);
+
+          // to display "try again" btn & disable the "confirm" btn
+          if(hasSignature && (hasLiveApiKey || hasSandboxApiKey)) {
+            // Do Nothing
+          } else {  
+            document.getElementById('ntp-confirm-btn').style.display = "none";
+            document.getElementById('ntp-try-btn').style.display = "inline-block";
+          }
 
       } else {
         document.getElementById("ntpPlatformAuthAlarmContent").innerHTML = response.message;
@@ -84,7 +88,7 @@ function createSignatureRadioOptions(sectionId, dataArray) {
     document.getElementById("ntpSignatoreAlarmContent").innerHTML = 'Unable to get Pos Signature. Make sure if you already have at least one ACTIVE & APPROVED point of sales.';
     document.getElementById('ntpSignatureLoader').style.display = "none";
     document.getElementById('ntpSignatoreAlarm').style.display = "block";
-    return;
+    return false;
   }
 
   dataArray.forEach(function(item) {
@@ -100,6 +104,7 @@ function createSignatureRadioOptions(sectionId, dataArray) {
     section.appendChild(radioLabel);
   });
   document.getElementById('ntpSignatureLoader').style.display = "none";
+  return true;
 }
 
 // Create Api Key radio box options 
@@ -120,7 +125,7 @@ function createApiKeyRadioOptions(sectionId, dataArray) {
       document.getElementById('ntpApiKeySandboxLoader').style.display = "none";
       document.getElementById('ntpApiKeySandboxAlarm').style.display = "block";
     }    
-    return;
+    return false;
   }
 
   dataArray.forEach(function(item) {
@@ -141,6 +146,7 @@ function createApiKeyRadioOptions(sectionId, dataArray) {
   } else if(sectionId === 'apiKeySandboxList') {
     document.getElementById('ntpApiKeySandboxLoader').style.display = "none";
   }
+  return true;
 }
 
 // Function to display selected radio box options
