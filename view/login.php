@@ -1,4 +1,8 @@
 <?php 
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+
   /**
    * 
    * IMPORTANT 
@@ -6,9 +10,27 @@
    */
 
   require_once('../../../../wp-load.php');
+
+  
+  wp_head();
+  // echo "AAA : ".get_template_directory_uri() ;
+  function wpse90382_popup_function() {
+    wp_enqueue_style( 'netopiacredentialcss', plugin_dir_url( __DIR__ ).'css/custom.css?v=1');
+    // wp_enqueue_style( 'mytest', plugin_dir_url( __DIR__ ).'css/custom.css', true, '1.2', 'all');
+
+    wp_enqueue_script( 'netopiacredentialjs', plugin_dir_url( __DIR__ ) . 'js/netopiaCredentials.js',array(),'2.5' ,true);
+		wp_localize_script( 'netopiacredentialjs', 'netopiaUIPath_data', array(
+			'plugin_url' => getAbsoulutFilePath(),
+			'site_url' => get_site_url(),
+		) );
+  }
+  
+  wpse90382_popup_function();
+  
+
   ?>
-<link rel="stylesheet" href="<?php echo plugin_dir_url( __DIR__ ).'css/custom.css';?>">
-<script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js?v=4';?>"></script>
+<!-- <link rel="stylesheet" href="<?php echo plugin_dir_url( __DIR__ ).'css/custom.css';?>"> -->
+<!-- <script src="<?php echo plugin_dir_url( __DIR__ ).'/js/netopiaCredentials.js?v=4';?>"></script> -->
   <div class="imgcontainer">
     <span onclick="self.close();" class="close" title="Close Modal">&times;</span>
     <img src="../img/NETOPIA_Payments.svg" alt="Avatar" class="avatar" width="250px">
@@ -38,7 +60,7 @@
   </form>
 
 
-  <form id="ntpPlatformCredentialDataForm" class="modal-content animate" method="post" style="display: none;">
+  <form id="ntpPlatformCredentialDataForm" class="modal-content animate" method="post" style="display: none; padding:10px;">
   <!-- Signatore Section -->
   <fieldset id="signature">
     <legend><b>Preferred POS signature:</b></legend>
@@ -94,3 +116,5 @@
 </div>
 <br>
 <div id="wpRestResponse" class="alert success" style="text-align: center; display: none;"></div>
+
+<?php wp_footer();?>

@@ -76,13 +76,16 @@ button {
 
 /* Center the image and position the close button */
 .imgcontainer {
-    text-align: center;
     margin: 24px 0 12px 0;
     position: relative;
   }
 
   .container {
     padding: 16px;
+  }
+  
+  .imgcontainer img {
+    padding-left:30px;
   }
   
 /* Add Zoom Animation */
@@ -206,4 +209,8 @@ fieldset {
 
 .ntp-credential-list label {
   display: block;
+}
+
+.ntp-credential-list label input{
+  margin-right: 5px;
 }
