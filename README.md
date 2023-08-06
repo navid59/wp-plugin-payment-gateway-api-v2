@@ -6,3 +6,4 @@ This plugin is work for API v1
     - Make Payment base on API v2
     - Has configuration wizard
     - is able to configure without wizard as well
+    - has refound
