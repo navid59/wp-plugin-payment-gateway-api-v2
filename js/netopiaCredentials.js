@@ -1,3 +1,6 @@
+var netopiaUIPath_dataPluginUrl = netopiaUIPath_data.plugin_url;
+var siteUrl = netopiaUIPath_data.site_url;
+
 document.addEventListener('DOMContentLoaded', function() {
     
     var loginButton = document.getElementById('loginToNetopiaPlatform');
@@ -15,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var ntpPassword = document.getElementById('ntpPassword').value;  
     
     // Call WP Rest API and return Credential:
-    sendFormData(ntpUsername, ntpPassword)
+    getCredentialData(ntpUsername, ntpPassword)
     .then(function(response) {
       document.getElementById('ntpLoader').style.display = "none";
 
@@ -53,11 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-
-function sendFormData(username, password) {
+// Send Authentiacation data to wp Api in order to get Credential Data
+function getCredentialData(username, password) {
   return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost/paymentGatewayApi2/index.php/wp-json/netopiapayments/v1/credential/', true);
+    xhr.open('POST', siteUrl +'/index.php/wp-json/netopiapayments/v1/credential/', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -74,7 +77,6 @@ function sendFormData(username, password) {
     };
 
     var requestBody = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
-
     xhr.send(requestBody);
   });
 }
@@ -109,8 +111,8 @@ function createSignatureRadioOptions(sectionId, dataArray) {
 
 // Create Api Key radio box options 
 function createApiKeyRadioOptions(sectionId, dataArray) {
-  console.log(dataArray);
-  console.log("---------------------");
+  // console.log(dataArray);
+  // console.log("---------------------");
 
   var section = document.getElementById(sectionId);
 
@@ -149,7 +151,7 @@ function createApiKeyRadioOptions(sectionId, dataArray) {
   return true;
 }
 
-// Function to display selected radio box options
+// Validate & display selected radio box options
 function displaySelected() {
   // Get the selected radio box options from each section
   var selectedSignature = document.querySelector('input[name="signatureList"]:checked');
@@ -157,7 +159,7 @@ function displaySelected() {
   var selectedApiKeySandbox = document.querySelector('input[name="apiKeySandboxList"]:checked');
 
   // Validate if the selected options are not empty
-  if (!selectedSignature && (!selectedApiKeyLive || !selectedApiKeySandbox)) {
+  if (!selectedSignature || (!selectedApiKeyLive || !selectedApiKeySandbox)) {
     alert('Please select at least one Signature and one API Key.');
     return;
   }
@@ -205,7 +207,7 @@ function displaySelected() {
 
   // Perform the form update the credential Data
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://localhost/paymentGatewayApi2/index.php/wp-json/netopiapayments/v1/updatecredential/', true);
+  xhr.open('POST', siteUrl + '/index.php/wp-json/netopiapayments/v1/updatecredential/', true);
   xhr.onload = function () {
     if (xhr.status === 200) {
       // Display the result of the request

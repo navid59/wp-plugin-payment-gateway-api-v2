@@ -17,7 +17,7 @@ add_action('rest_api_init', 'netopiaCustomEndpoint');
 
 function netopiaCustomEndpoint()
 {
-    // Register the credential endpoint
+    // Register the credential endpoints
     register_rest_route('netopiapayments/v1', '/credential', array(
         'methods' => 'POST',
         'callback' => 'getCredentialCallback',
@@ -33,7 +33,7 @@ function netopiaCustomEndpoint()
 }
 
 
-// Callback function to handle the get credential request
+// Callback function to update credentials
 function updateCredentialCallback($request)
 {
     // Predefine response data
@@ -41,21 +41,16 @@ function updateCredentialCallback($request)
 
     // Create a new response object
     $response = new WP_REST_Response();
-    // var_dump($response);
-
+    
     // Get the request parameters
     $params = $request->get_params();
-    // var_dump($params);
-
+    
     // Retrieve and process data
     $data = array(
-        // 'response' => $response,
         'params' => $params,
         'timestamp' => time(),
     );
 
-    ////////////////
-    
     
 
     // Get the existing settings option
@@ -77,7 +72,7 @@ function updateCredentialCallback($request)
     // Save the updated settings options
     update_option('woocommerce_netopiapayments_settings', $settings);
 
-    ////////////////
+    
 
     $response = $data;
     // $response->set_status(200);

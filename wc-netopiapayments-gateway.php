@@ -4,8 +4,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // include_once __DIR__ . '/vendor/autoload.php';
+// include_once('lib/log.php');
 include_once('setting/static.php');
-include_once('lib/log.php');
 include_once('lib/request.php');
 
 
@@ -416,9 +416,10 @@ class netopiapayments extends WC_Payment_Gateway {
         
         switch($resultObj->status) {
             case 1:
-            echo "<pre>";
-            print_r($resultObj);
-            echo "</pre>";
+            // Uncomented for debugging
+            // echo "<pre>";
+            // print_r($resultObj);
+            // echo "</pre>";
             if ($resultObj->code == 200 &&  !is_null($resultObj->data->payment->paymentURL)) {
                 $parsUrl = parse_url($resultObj->data->payment->paymentURL);
                 $actionStr = $parsUrl['scheme'].'://'.$parsUrl['host'].$parsUrl['path'];
@@ -427,9 +428,7 @@ class netopiapayments extends WC_Payment_Gateway {
                 foreach($queryParams as $key => $val) {
                         $formAttributes .= '<input type="hidden" name ="'.$key.'" value="'.$val.'">';
                     }
-                echo "<pre>";
-                var_dump($parsUrl);
-                echo "</pre>";
+                
                 try {                        
                     return '<form action="'.$actionStr.'" method="get" id="frmPaymentRedirect">
                                     '.$formAttributes.'
@@ -453,7 +452,7 @@ class netopiapayments extends WC_Payment_Gateway {
                                             lineHeight		: "32px"
                                         }
                                     });
-                                    // jQuery("#submit_netopia_payment_form").click();});
+                                    jQuery("#submit_netopia_payment_form").click();});
                                     </script>
                                 </form>';
                     } catch (\Exception $e) {
@@ -465,11 +464,11 @@ class netopiapayments extends WC_Payment_Gateway {
                 }
             break;
             default:
-            echo "<pre>";
-            print_r($resultObj);
-            echo "<hr>";
-            echo "AAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBB";
-            echo "</pre>";
+            // Un comented for debuging
+            // echo "<pre>";
+            // print_r($resultObj);
+            // echo "</pre>";
+            echo "There is a problem, the server is not response to request or Payment URL is not generated";
             break;
         }
 	}	
@@ -485,16 +484,16 @@ class netopiapayments extends WC_Payment_Gateway {
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
-        include_once('lib/log.php');
+        // include_once('lib/log.php');
         include_once('lib/ipn.php');
 
         require_once 'vendor/autoload.php';
 
 
         // Log
-        $setRealTimeLog = ["IPN"    =>  "IPN Is hitting"];
-        log::setRealTimeLog($setRealTimeLog);
-        log::logHeader();
+        // $setRealTimeLog = ["IPN"    =>  "IPN Is hitting"];
+        // log::setRealTimeLog($setRealTimeLog);
+        // log::logHeader();
 
         // /**
         //  * get defined keys
@@ -543,16 +542,16 @@ class netopiapayments extends WC_Payment_Gateway {
     /**
      * Log for Debugging
      */
-    public function ntpLog($contents){	
-        $file = dirname(__FILE__).'/ntpDebugging_'.date('y-m-d').'.txt';	
+    // public function ntpLog($contents){	
+    //     $file = dirname(__FILE__).'/ntpDebugging_'.date('y-m-d').'.txt';	
         
-        if (is_array($contents))
-            $contents = var_export($contents, true);
-        else if (is_object($contents))
-            $contents = json_encode($contents);
+    //     if (is_array($contents))
+    //         $contents = var_export($contents, true);
+    //     else if (is_object($contents))
+    //         $contents = json_encode($contents);
             
-        file_put_contents($file, date('m-d H:i:s').$contents."\n", FILE_APPEND);
-    }
+    //     file_put_contents($file, date('m-d H:i:s').$contents."\n", FILE_APPEND);
+    // }
 
     /**
      * Save fields (Payment configuration) in DB
