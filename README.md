@@ -7,3 +7,6 @@ This plugin is work for API v1
     - Has configuration wizard
     - is able to configure without wizard as well
     - has refound
+
+## Problems 
+    - Payment page has error and not return to website
