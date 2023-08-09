@@ -478,33 +478,25 @@ class netopiapayments extends WC_Payment_Gateway {
     * This is the IPN for new plugin
     **/
     function checkNetopiapaymentsResponse() {
-        //die("IPN IPN in NEW PLUGIN");
-
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
-        // include_once('lib/log.php');
         include_once('lib/ipn.php');
-
         require_once 'vendor/autoload.php';
 
 
-        // Log
-        // $setRealTimeLog = ["IPN"    =>  "IPN Is hitting"];
-        // log::setRealTimeLog($setRealTimeLog);
-        // log::logHeader();
-
+        
         // /**
         //  * get defined keys
         //  */
         $ntpIpn = new IPN();
 
-        $ntpIpn->activeKey         = '1PD2-FYKC-R27B-55BW-NVGN'; // activeKey or posSignature
-        $ntpIpn->posSignatureSet[] = '1PD2-FYKC-R27B-55BW-NVGN'; // The active key should be in posSignatureSet as well
-        $ntpIpn->posSignatureSet[] = 'FAKE-FAKE-FAKE-FAKE-FAKE'; 
-        $ntpIpn->posSignatureSet[] = 'FAKE-FAKE-FAKE-FAKE-FAKE'; 
-        $ntpIpn->posSignatureSet[] = 'FAKE-FAKE-FAKE-FAKE-FAKE';
+        $ntpIpn->activeKey         = $this->account_id; // activeKey or posSignature
+        $ntpIpn->posSignatureSet[] = $this->account_id; // The active key should be in posSignatureSet as well
+        $ntpIpn->posSignatureSet[] = 'AAAA-BBBB-CCCC-DDDD-EEEE'; 
+        $ntpIpn->posSignatureSet[] = 'DDDD-AAAA-BBBB-CCCC-EEEE'; 
+        $ntpIpn->posSignatureSet[] = 'EEEE-DDDD-AAAA-BBBB-CCCC';
         $ntpIpn->hashMethod        = 'SHA512';
         $ntpIpn->alg               = 'RS512';
         
