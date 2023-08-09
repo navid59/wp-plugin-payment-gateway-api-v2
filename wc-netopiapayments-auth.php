@@ -75,8 +75,7 @@ function updateCredentialCallback($request)
     
 
     $response = $data;
-    // $response->set_status(200);
-    echo json_encode($response);
+    wp_send_json($response);
 
 }
 
@@ -123,8 +122,7 @@ function getCredentialCallback($request)
             'details' => $ntpLiveAccessRes,
             'timestamp' => time(),
         );
-        echo json_encode($data);
-        exit;
+        wp_send_json($data);
      }
 
      $ntpSignatures = validateSignature(getNtpSignature($ntpLiveAccessRes['data']['accessKey'], $isLive = true));
@@ -139,7 +137,6 @@ function getCredentialCallback($request)
             'details' => $ntpLiveAccessRes,
             'timestamp' => time(),
         );
-        // echo json_encode($data);
         $ntpSandboxApiKeys = $data;
      } else {
         $ntpSandboxApiKeys = validateApiKey(getNTPApiKey($ntpSandboxAccessRes['data']['accessKey'], $isLive = false));

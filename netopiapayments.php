@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: NETOPIA Payments - V2
+Plugin Name: NETOPIA Payments
 Plugin URI: https://www.netopia-payments.ro
 Description: accept payments through NETOPIA Payments
 Author: Netopia
-Version: 1.0.0
+Version: 2.0.0
 License: GPLv2
 */
 
