@@ -237,7 +237,7 @@ class netopiapayments extends WC_Payment_Gateway {
         
           $payment_methods = array('credit_card');
           $name_methods = array(
-              'credit_card'	      => __( 'Credit Card - Api v2', 'netopiapayments' )
+              'credit_card'	      => __( 'Credit / Debit Card', 'netopiapayments' )
           );
         ?>
         <div id="netopia-methods">
