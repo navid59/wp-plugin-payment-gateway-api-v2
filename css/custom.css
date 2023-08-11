@@ -214,3 +214,13 @@ fieldset {
 .ntp-credential-list label input{
   margin-right: 5px;
 }
+
+.ntp-notify {
+  color: #f44336;
+}
+
+.check-mark::before {
+  content: "\2713"; /* Unicode character for check mark */
+  color: green;
+  margin-right: 5px; /* Adjust as needed for spacing */
+}

@@ -68,6 +68,7 @@ function updateCredentialCallback($request)
     $settings['account_id'] = $params['signature'];
     $settings['live_api_key'] = $params['apiKeyLive'];
     $settings['sandbox_api_key'] = $params['apiKeySandbox'];
+    $settings['ntp_notify_value'] = $params['notifyMerchant'];
 
     // Save the updated settings options
     update_option('woocommerce_netopiapayments_settings', $settings);
@@ -181,15 +182,16 @@ function validateSignature($signatureArrRes) {
     }
         
 
-    $validatedSignaure = array();    
-    foreach ($signatureArrRes['data']['items'] as $signature) {
-        if ($signature['isActive'] && $signature['isApproved']) {
-            if (($signature['kybStatus'] == KYC_STATUS_APROVED) && $signature['type'] == POS_TYPE_CRM ) {
-                $validatedSignaure[] = $signature;
-            }
-        }
-    }
-    return $validatedSignaure;
+    // $validatedSignaure = array();    
+    // foreach ($signatureArrRes['data']['items'] as $signature) {
+    //     if ($signature['isActive'] && $signature['isApproved']) {
+    //         if (($signature['kybStatus'] == KYC_STATUS_APROVED) && $signature['type'] == POS_TYPE_CRM ) {
+    //             $validatedSignaure[] = $signature;
+    //         }
+    //     }
+    // }
+    // return $validatedSignaure;
+    return $signatureArrRes['data']['items'] ;
 }
 
 function validateApiKey($apiKeyArrRes) {

@@ -1,12 +1,13 @@
 <?php
 /*
-Plugin Name: NETOPIA Payments
+Plugin Name: NETOPIA Payments Payment Gateway
 Plugin URI: https://www.netopia-payments.ro
 Description: accept payments through NETOPIA Payments
 Author: Netopia
 Version: 2.0.0
 License: GPLv2
 */
+
 
 // Include our Gateway Class and register Payment Gateway with WooCommerce
 add_action( 'plugins_loaded', 'netopiapayments_init', 0 );
@@ -43,11 +44,18 @@ function netopiapayments_init() {
         if ( 'woocommerce_page_wc-settings' != $hook ) {
             return;
         }
+
+		echo "<pre>";
+		$ntpOptions = get_option( 'woocommerce_netopiapayments_settings' );
+		$ntpNotify = $ntpOptions['ntp_notify_value'];
+		echo "</pre>";
+
         wp_enqueue_script( 'netopiapaymentsjs', plugin_dir_url( __FILE__ ) . 'js/netopiapayments.js',array('jquery'),'2.0' ,true);
         wp_enqueue_script( 'netopiaUIjs', plugin_dir_url( __FILE__ ) . 'js/netopiaCustom.js',array(),'1.0' ,true);
 		wp_localize_script( 'netopiaUIjs', 'netopiaUIPath_data', array(
 			'plugin_url' => getAbsoulutFilePath(),
 			'site_url' => get_site_url(),
+			'ntp_notify' => $ntpNotify,
 		) );
 		
         wp_enqueue_script( 'netopiatoastrjs', plugin_dir_url( __FILE__ ) . 'js/toastr.min.js',array(),'2.0' ,true);

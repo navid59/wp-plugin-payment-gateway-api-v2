@@ -100,9 +100,24 @@ function createSignatureRadioOptions(sectionId, dataArray) {
     radioInput.name = sectionId;
     radioInput.value = item.posSignature;
     radioInput.required = true;
+    radioInput.setAttribute('data-posurl', item.posURL);
+    radioInput.setAttribute('data-posactive', item.isActive);
+    radioInput.setAttribute('data-posapproved', item.isApproved);
+    radioInput.setAttribute('data-poskyb', item.kybStatus);
 
+    // Append the radio input first
     radioLabel.appendChild(radioInput);
-    radioLabel.appendChild(document.createTextNode(item.posSignature));
+
+    // Append the text node (value) after the radio input
+    radioLabel.appendChild(document.createTextNode(item.posSignature + "  - (" + item.posURL + ")"));
+
+    // Create the check mark element and append it if conditions are met
+    var checkMark = document.createElement('span');
+    checkMark.className = 'check-mark';
+    if (item.isActive === true && item.isApproved === true && item.kybStatus === 5) {
+        radioLabel.appendChild(checkMark);
+    }
+
     section.appendChild(radioLabel);
   });
   document.getElementById('ntpSignatureLoader').style.display = "none";
@@ -111,9 +126,6 @@ function createSignatureRadioOptions(sectionId, dataArray) {
 
 // Create Api Key radio box options 
 function createApiKeyRadioOptions(sectionId, dataArray) {
-  // console.log(dataArray);
-  // console.log("---------------------");
-
   var section = document.getElementById(sectionId);
 
   // Check if dataArray is empty
@@ -155,6 +167,7 @@ function createApiKeyRadioOptions(sectionId, dataArray) {
 function displaySelected() {
   // Get the selected radio box options from each section
   var selectedSignature = document.querySelector('input[name="signatureList"]:checked');
+  
   var selectedApiKeyLive = document.querySelector('input[name="apiKeyLiveList"]:checked');
   var selectedApiKeySandbox = document.querySelector('input[name="apiKeySandboxList"]:checked');
 
@@ -190,7 +203,7 @@ function displaySelected() {
   // Display the response of wp update endpoint 
   var wpRestResponse = document.getElementById('wpRestResponse');
     
-  // Send the selected values to another URL (replace 'your_url' with the actual URL)
+  // Send the selected values to be updated
   var formData = new FormData();
   if (selectedSignature) {
     formData.append('signature', selectedSignature.value);
@@ -201,6 +214,33 @@ function displaySelected() {
   if (selectedApiKeySandbox) {
     formData.append('apiKeySandbox', selectedApiKeySandbox.value);
   }
+
+  // Create suitable msg for  Notify Merchant
+  var selectedPosURL = selectedSignature.dataset.posurl;
+  var selectedActiveStatus = selectedSignature.dataset.posactive;
+  var selectedApprovedStatus = selectedSignature.dataset.posapproved;
+  var selectedkybStatus = selectedSignature.dataset.poskyb;
+
+  var merchantNotify = "Selected POS for "+selectedPosURL+" ";
+  // Assign active status to Notify
+  if(selectedActiveStatus == "true")
+    merchantNotify += "is active, ";
+  else 
+    merchantNotify += "is not active, ";
+
+  // Assign approve status to Notify  
+  if(selectedApprovedStatus == "true")
+    merchantNotify += "is approved, ";
+  else 
+    merchantNotify += "is not approved, ";
+
+  // Assign kyb status to Notify  
+  if(selectedkybStatus == 5)
+    merchantNotify += "has KYB confirm.";
+  else 
+    merchantNotify += "hasn't KYB confirm.";
+
+  formData.append('notifyMerchant', merchantNotify);
 
   // Remove privious alaram
   document.getElementById('wpRestResponse').style.display = "none";

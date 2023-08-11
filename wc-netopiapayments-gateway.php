@@ -61,6 +61,7 @@ class netopiapayments extends WC_Payment_Gateway {
         add_action('woocommerce_receipt_netopiapayments', array(&$this, 'receipt_page'));
     }
 
+
     /**
      * Build the administration fields for this specific Gateway
      */
@@ -121,7 +122,7 @@ class netopiapayments extends WC_Payment_Gateway {
                                                     The `<b>Sandbox API Key</b>` is not obligatory but highly recommended. <br>
                                                     It serves as a virtual playground, allowing you to thoroughly test your plugin implementation before moving into a production/live environment.", 'netopiapayments' ),
                                                 );
-            
+                        
             $this->form_fields['wizard_button'] = array(
                                                     'title'             => __( 'Configuration!', 'netopiapayments' ),
                                                     'type'              => 'button',
@@ -151,6 +152,18 @@ class netopiapayments extends WC_Payment_Gateway {
                                                     'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
                                                     'custom_attributes' => array('readonly' => 'readonly')
                                                 );
+
+            // To display Notify to Merchant
+            $this->form_fields['ntp_notify'] =  array(
+                                                    'title'       => '',
+                                                    'type'        => 'title',
+                                                    'description' => __("", 'netopiapayments' ),
+                                                );
+            $this->form_fields['ntp_notify_value'] = array(
+                                                    'title'             => __( '', 'netopiapayments' ),
+                                                    'type'              => 'hidden',
+                                                    'custom_attributes' => array(),
+                                                );
         } else {
             $this->form_fields['key_setting'] = array(
                                                     'title'       => __( 'Seller Account', 'netopiapayments' ),
@@ -170,10 +183,10 @@ class netopiapayments extends WC_Payment_Gateway {
                                                     'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
                                                 );
             $this->form_fields['sandbox_api_key'] = array(
-                                                        'title'        => __( 'Sandbox API Key: ', 'netopiapayments' ),
-                                                        'type'        => 'text',
-                                                        'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
-                                                        'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
+                                                    'title'        => __( 'Sandbox API Key: ', 'netopiapayments' ),
+                                                    'type'        => 'text',
+                                                    'desc_tip'    => __( 'In order to communicate with the payment API, you need a specific API KEY.', 'netopiapayments' ),
+                                                    'description' => __( 'Generate / Find it from NETOPIA Payments admin -> Profile -> Security', 'netopiapayments' ),
                                                     );
         }
     }
@@ -393,8 +406,11 @@ class netopiapayments extends WC_Payment_Gateway {
 
         /**	Add Woocomerce & Wordpress version to request*/
         $orderData->data				 	= new \StdClass();
+        $orderData->data->vesion 		    = "2.0.0";
+        $orderData->data->api 		        = "2.0";
+        $orderData->data->platform 		    = "Wordpress";
         $orderData->data->wordpress 		= $this->getWpInfo();
-        $orderData->data->wooCommerce 		= $this->getWooInfo();	
+        $orderData->data->wooCommerce 		= $this->getWooInfo();
 
         /**
          * Assign values and generate Json
@@ -531,19 +547,6 @@ class netopiapayments extends WC_Payment_Gateway {
         return null;
     }
 
-    /**
-     * Log for Debugging
-     */
-    // public function ntpLog($contents){	
-    //     $file = dirname(__FILE__).'/ntpDebugging_'.date('y-m-d').'.txt';	
-        
-    //     if (is_array($contents))
-    //         $contents = var_export($contents, true);
-    //     else if (is_object($contents))
-    //         $contents = json_encode($contents);
-            
-    //     file_put_contents($file, date('m-d H:i:s').$contents."\n", FILE_APPEND);
-    // }
 
     /**
      * Save fields (Payment configuration) in DB

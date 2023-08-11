@@ -1,19 +1,14 @@
+var ntpNotify = netopiaUIPath_data.ntp_notify;
+    
 document.addEventListener('DOMContentLoaded', function() {
     var popupLink = document.getElementById('woocommerce_netopiapayments_wizard_button');
+    document.getElementById('woocommerce_netopiapayments_ntp_notify').innerHTML= ntpNotify;
     popupLink.addEventListener('click', function(e) {
         var netopiaUIPath_dataPluginUrl = netopiaUIPath_data.plugin_url;
         var netopiaUIPath_dataSiteUrl = netopiaUIPath_data.site_url;
-        console.log(netopiaUIPath_dataPluginUrl);
-        console.log(netopiaUIPath_dataSiteUrl);
       e.preventDefault();
       openPopupWindow(netopiaUIPath_dataSiteUrl + netopiaUIPath_dataPluginUrl+'view/login.php', 'Popup Form', 700, 700);
     });
-
-    // var loginButton = document.getElementById('loginToNetopiaPlatform');
-    // loginButton.addEventListener('click', function(e){
-    //   e.preventDefault();
-    //   getNetopiaPlatformCredentials();
-    // });
   });
   
   function openPopupWindow(url, title, width, height) {
@@ -24,10 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Function to handle the popup window close event
-  function handlePopupWindowClose() {
-    
+  function handlePopupWindowClose() {    
     // Reload the parent window (NETOPIA Payments admin page)
     location.reload();
-
-
   }

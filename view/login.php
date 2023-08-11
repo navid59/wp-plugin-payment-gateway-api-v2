@@ -15,10 +15,9 @@
   wp_head();
   // echo "AAA : ".get_template_directory_uri() ;
   function wpse90382_popup_function() {
-    wp_enqueue_style( 'netopiacredentialcss', plugin_dir_url( __DIR__ ).'css/custom.css?v=1');
-    // wp_enqueue_style( 'mytest', plugin_dir_url( __DIR__ ).'css/custom.css', true, '1.2', 'all');
+    wp_enqueue_style( 'netopiacredentialcss', plugin_dir_url( __DIR__ ).'css/custom.css?v=1.4');
 
-    wp_enqueue_script( 'netopiacredentialjs', plugin_dir_url( __DIR__ ) . 'js/netopiaCredentials.js',array(),'2.6' ,true);
+    wp_enqueue_script( 'netopiacredentialjs', plugin_dir_url( __DIR__ ) . 'js/netopiaCredentials.js',array(),'3.3' ,true);
 		wp_localize_script( 'netopiacredentialjs', 'netopiaUIPath_data', array(
 			'plugin_url' => getAbsoulutFilePath(),
 			'site_url' => get_site_url(),
