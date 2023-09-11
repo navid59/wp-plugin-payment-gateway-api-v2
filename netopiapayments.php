@@ -45,11 +45,9 @@ function netopiapayments_init() {
             return;
         }
 
-		echo "<pre>";
 		$ntpOptions = get_option( 'woocommerce_netopiapayments_settings' );
-		$ntpNotify = $ntpOptions['ntp_notify_value'];
-		echo "</pre>";
-
+		$ntpNotify = array_key_exists('ntp_notify_value', $ntpOptions) ? $ntpOptions['ntp_notify_value'] : '';
+		
         wp_enqueue_script( 'netopiapaymentsjs', plugin_dir_url( __FILE__ ) . 'js/netopiapayments.js',array('jquery'),'2.0' ,true);
         wp_enqueue_script( 'netopiaUIjs', plugin_dir_url( __FILE__ ) . 'js/netopiaCustom.js',array(),'1.0' ,true);
 		wp_localize_script( 'netopiaUIjs', 'netopiaUIPath_data', array(
